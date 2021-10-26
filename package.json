@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "start": "NODE_PATH=./dist/src ts-node ./dist/src/index.js"
+    "server": "tsc && NODE_PATH=./dist/src ts-node ./dist/src/index.js"
 },
 "devDependencies": {
   "@types/express": "4.17.13",

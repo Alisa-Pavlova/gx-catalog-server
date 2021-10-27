@@ -2,8 +2,8 @@ import Catalog from './models/Catalog'
 import Item from './models/Item'
 
 const dbInit = () => {
-  Catalog.sync()
-  Item.belongsTo(Catalog, { foreignKey: 'catalog_id' })
-  Item.sync()
+  Item.sync({ alter: true })
+  Catalog.hasMany(Item, { onDelete: 'cascade', foreignKey: 'catalog_id' })
+  Catalog.sync({alter: true })
 }
 export default dbInit

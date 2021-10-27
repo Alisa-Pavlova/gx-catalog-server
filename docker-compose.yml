@@ -1,0 +1,14 @@
+version: '3.1'
+
+services:
+  postgres:
+    container_name: ex_postgres_container
+    image: postgres
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      PGDATA: /data/postgres
+    ports:
+      - ${DB_PORT}:5432
+    restart: always

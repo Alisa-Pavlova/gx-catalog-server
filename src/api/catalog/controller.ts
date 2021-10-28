@@ -15,7 +15,7 @@ catalogRouter.get('/', async (req: Request, res: Response) => {
 
 catalogRouter.get('/:id', async (req: Request, res: Response) => {
     const id = Number(req.params.id)
-    
+
     try {
         const result = await getById(id)
         return res.status(200).send(result)
@@ -53,7 +53,7 @@ catalogRouter.delete('/:id', async (req: Request, res: Response) => {
     try {
         await deleteById(Number(id))
 
-        return res.status(204)
+        return res.status(204).send()
     } catch (err) {
         return res.status(500).send(err.message)
     }

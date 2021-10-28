@@ -5,17 +5,22 @@ import { Sequelize } from 'sequelize-typescript'
 export const getAll = async (): Promise<ICatalog[]> => {
   return await Catalog.findAll({
     attributes: { 
-      include: [[Sequelize.fn("COUNT", Sequelize.col("Items.id")), "itemsCount"]] 
+      include: [[Sequelize.fn("COUNT", Sequelize.col("items.id")), "itemsCount"]] 
     },
       include: [{
-        model: Item, attributes: []
+        model: Item, attributes: [], as: 'items'
     }],
     group: ['Catalog.id']
   })
 }
 
 export const getById = async (id: number): Promise<ICatalog> => {
-  const foundCatalog = await Catalog.findByPk(id)
+  const foundCatalog = await Catalog.findOne({
+    where: { id },
+    include: [{
+        model: Item, as: 'items'
+      }],
+  })
 
   if (!foundCatalog) {
     throw new Error('Catalog not found')

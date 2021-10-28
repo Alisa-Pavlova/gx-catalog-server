@@ -33,7 +33,8 @@ Item.init({
   },
   name: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
   brand: {
     type: DataTypes.STRING,

@@ -1,9 +1,6 @@
 import Item, { IItem, IItemInput } from 'db/models/Item'
 import { Op } from 'sequelize'
 
-export const getAllByCatalogId = async (catalogId: number): Promise<IItem[]> => {
-  return await Item.findAll({ where: { catalog_id: catalogId } })
-}
 
 export const getById = async (id: number): Promise<IItem> => {
   const foundItem = await Item.findByPk(id)
@@ -15,8 +12,8 @@ export const getById = async (id: number): Promise<IItem> => {
   return foundItem
 }
 
-export const getByNameInCatalog = async (name: string, catalogId: number): Promise<IItem> => {
-  return Item.findOne({ where: { name, catalog_id: catalogId } })
+export const getByName = async (name: string): Promise<IItem> => {
+  return Item.findOne({ where: { name } })
 }
 
 export const getBySearch = async (catalogId: number, searchString: string): Promise<IItem[]> => {
@@ -27,7 +24,8 @@ export const getBySearch = async (catalogId: number, searchString: string): Prom
        { name: { [Op.like]: '%' + searchString + '%' } },
        { brand: { [Op.like]: '%' + searchString + '%' }},
        { model: { [Op.like]: '%' + searchString + '%' }},
-       { price: Number(searchString) },
+       { description: { [Op.like]: '%' + searchString + '%' }},
+       !isNaN(Number(searchString)) && {...{ price: Number(searchString) }},
       ]
     }
   })

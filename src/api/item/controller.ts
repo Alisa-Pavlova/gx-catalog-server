@@ -1,21 +1,10 @@
 import { IItemInput } from 'db/models/Item'
 import { Router, Request, Response } from 'express'
-import { getAllByCatalogId, create, update, deleteById, getById, getByNameInCatalog, getBySearch} from './repository'
+import { create, update, deleteById, getById, getByName, getBySearch} from './repository'
 
 const ItemRouter = Router()
 
-ItemRouter.get('/', async (req: Request, res: Response) => {
-    const catalogId = Number(req.query.catalogId)
-
-    try {
-        const result = await getAllByCatalogId(catalogId)
-        return res.status(200).send(result)
-    } catch (err) {
-        return res.status(500).send(err.message)
-    }
-})
-
-ItemRouter.get('/:id', async (req: Request, res: Response) => {
+ItemRouter.get('/item/:id', async (req: Request, res: Response) => {
     const id = Number(req.params.id)
 
     try {
@@ -37,11 +26,11 @@ ItemRouter.get('/search', async (req: Request, res: Response) => {
     }
 })
 
-ItemRouter.get('/name', async (req: Request, res: Response) => {
-    const { name, catalogId } = req.query
+ItemRouter.get('/name/:name', async (req: Request, res: Response) => {
+    const { name } = req.params
 
     try {
-        const result = await getByNameInCatalog(name.toString(), Number(catalogId))
+        const result = await getByName(name.toString())
         return res.status(200).send(result)
     } catch (err) {
         return res.status(500).send(err.message)
@@ -65,7 +54,7 @@ ItemRouter.delete('/:id', async (req: Request, res: Response) => {
     
     try {
         await deleteById(Number(id))
-        return res.status(204)
+        return res.status(204).send()
     } catch (err) {
         return res.status(500).send(err.message)
     }

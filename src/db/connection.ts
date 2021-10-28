@@ -4,9 +4,13 @@ import { dbHost, dbName, dbPassword, dbUser, dbPort } from 'config'
 let sequelizeConnection
 
 try {
-  sequelizeConnection = new Sequelize(`postgres://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}`, {
+  sequelizeConnection = new Sequelize(dbName, dbUser, dbPassword, {
+    host: dbHost,
+    port: Number(dbPort),
+    dialect: 'postgres',
     logging: false
   })
+    
 } catch(err) {
   console.error(err)
 }
